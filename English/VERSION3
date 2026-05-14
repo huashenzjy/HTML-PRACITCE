@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英语 B1 → B2 提升计划 | 每日训练面板</title>
+    <style>
+        :root {
+            --bg: #F8F6FC;
+            --bg-card: #FFFFFF;
+            --bg-card-hover: #F5F3FA;
+            --bg-elevated: #EDEAF5;
+            --border: #E0DCF0;
+            --border-light: #CEC8E5;
+            --text: #2C2C3A;
+            --text-secondary: #6E6E82;
+            --text-heading: #1F1F2E;
+            --text-bright: #0D0D1A;
+            --accent: #6B5B95;
+            --accent-soft: #6B5B9518;
+            --accent-glow: #6B5B9530;
+            --green: #4A9E7C;
+            --green-soft: #4A9E7C1A;
+            --green-bright: #3B8C6A;
+            --red-soft: #E07B6C1A;
+            --red: #E07B6C;
+            --orange: #D4854A;
+            --blue-soft: #5B8DB91A;
+            --blue: #6B9EC4;
+            --sync-blue: #5B9BD5;
+            --radius-sm: 8px;
+            --radius: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --shadow-sm: 0 1px 3px rgba(107, 91, 149, 0.06);
+            --shadow: 0 4px 20px rgba(107, 91, 149, 0.08);
+            --shadow-lg: 0 8px 32px rgba(107, 91, 149, 0.12);
+            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-mono: 'SF Mono', 'Cascadia Code', 'Consolas', 'Monaco', monospace;
+            --font-sans: system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            padding-bottom: 100px;
+            background-image: radial-gradient(ellipse at 20% 10%, #EDEAF5 0%, transparent 60%), radial-gradient(ellipse at 80% 90%, #F5F3FA 0%, transparent 60%);
+            background-attachment: fixed;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--border-light);
+        }
+
+        /* TOP BAR */
+        .top-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(248, 246, 252, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .top-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+        .logo-text {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text-heading);
+            letter-spacing: -0.01em;
+            white-space: nowrap;
+        }
+        .logo-dot {
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent);
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+        .streak-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--accent-soft);
+            border: 1px solid var(--accent-glow);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--accent);
+            white-space: nowrap;
+        }
+        .streak-badge.broken {
+            background: var(--red-soft);
+            border-color: #E07B6C40;
+            color: var(--red);
+        }
+        .streak-num {
+            font-size: 1.3rem;
+            font-weight: 800;
+            font-family: var(--font-mono);
+        }
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        .status-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .status-dot.idle {
+            background: #B0ADBD;
+        }
+        .status-dot.active {
+            background: var(--accent);
+            animation: pulse-dot 1.8s ease-in-out infinite;
+        }
+        .status-dot.done {
+            background: var(--green-bright);
+            box-shadow: 0 0 10px var(--green-soft);
+        }
+        @keyframes pulse-dot {
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 var(--accent-glow);
+            }
+            50% {
+                box-shadow: 0 0 0 10px transparent;
+            }
+        }
+
+        /* SYNC & USER */
+        .sync-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+        .sync-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            transition: background 0.3s;
+        }
+        .sync-dot.synced {
+            background: var(--green-bright);
+        }
+        .sync-dot.syncing {
+            background: var(--sync-blue);
+            animation: pulse-dot 1.2s ease-in-out infinite;
+        }
+        .sync-dot.error {
+            background: var(--red);
+        }
+        .sync-dot.offline {
+            background: #B0ADBD;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-heading);
+        }
+        .user-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent-soft);
+        }
+        .btn-login {
+            background: #FFFFFF;
+            border: 1px solid var(--border);
+            color: var(--text-heading);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .btn-login:hover {
+            background: var(--bg-elevated);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* PROGRESS BAR */
+        .progress-wrap {
+            padding: 0 20px;
+            position: sticky;
+            top: 60px;
+            z-index: 99;
+            background: rgba(248, 246, 252, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding-top: 10px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.3s;
+        }
+        .progress-wrap.scrolled {
+            border-bottom: 1px solid var(--border);
+        }
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        .progress-pct {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-heading);
+            font-family: var(--font-mono);
+        }
+        .progress-bar-outer {
+            height: 5px;
+            background: var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .progress-bar-inner {
+            height: 100%;
+            background: linear-gradient(90deg, #6B5B95, #9B8EC4, #6B5B95);
+            background-size: 200% 100%;
+            border-radius: 10px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        /* MAIN */
+        .main-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* CARDS */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 22px 24px;
+            transition: var(--transition);
+            position: relative;
+            box-shadow: var(--shadow-sm);
+        }
+        .card:hover {
+            border-color: var(--border-light);
+            box-shadow: var(--shadow);
+        }
+        .card.accent-left {
+            border-left: 3px solid var(--accent);
+        }
+        .card.green-left {
+            border-left: 3px solid var(--green);
+        }
+        .card.orange-left {
+            border-left: 3px solid var(--orange);
+        }
+        .card-highlight {
+            background: #FFFFFF;
+            border-color: var(--accent-glow);
+            box-shadow: 0 0 40px rgba(107, 91, 149, 0.06);
+        }
+        .card-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .card-heading {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            margin-bottom: 6px;
+            letter-spacing: -0.01em;
+        }
+        .card-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+        }
+
+        /* HERO */
+        .hero-section {
+            text-align: center;
+            padding: 30px 20px 20px;
+        }
+        .hero-identity {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            letter-spacing: -0.02em;
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+        .hero-identity .em {
+            color: var(--accent);
+        }
+        .hero-date-info {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        .hero-day-type {
+            display: inline-block;
+            background: var(--accent-soft);
+            color: var(--accent);
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin: 8px 0 14px;
+            letter-spacing: 0.02em;
+        }
+
+        /* BUTTONS */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 22px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.25s;
+            font-family: var(--font-sans);
+            letter-spacing: 0.01em;
+            white-space: nowrap;
+            text-decoration: none;
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: #FFFFFF;
+            box-shadow: 0 4px 20px rgba(107, 91, 149, 0.3);
+        }
+        .btn-primary:hover {
+            background: #7A6BA5;
+            box-shadow: 0 6px 28px rgba(107, 91, 149, 0.4);
+            transform: translateY(-1px);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid var(--border-light);
+            color: var(--text);
+        }
+        .btn-outline:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(107, 91, 149, 0.04);
+        }
+        .btn-sm {
+            padding: 7px 14px;
+            font-size: 0.8rem;
+            border-radius: 18px;
+        }
+        .btn-xs {
+            padding: 4px 10px;
+            font-size: 0.72rem;
+            border-radius: 14px;
+            font-weight: 500;
+        }
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-secondary);
+            padding: 6px 12px;
+        }
+        .btn-ghost:hover {
+            color: var(--text);
+            background: rgba(107, 91, 149, 0.04);
+            border-color: var(--border);
+            border-radius: 8px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        /* CHECKLIST */
+        .checklist {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .checklist li {
+            display: flex;
+            align-items: flex-start;
+            gap: 11px;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid transparent;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .checklist li:hover {
+            background: rgba(107, 91, 149, 0.04);
+        }
+        .checklist li.checked {
+            opacity: 0.75;
+        }
+        .checklist li.checked .cl-text {
+            text-decoration: line-through;
+            text-decoration-color: var(--text-secondary);
+            text-decoration-thickness: 1px;
+        }
+        .cl-checkbox {
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            border: 2px solid var(--border-light);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            margin-top: 1px;
+            position: relative;
+            background: #FFFFFF;
+        }
+        .checklist li.checked .cl-checkbox {
+            background: var(--green);
+            border-color: var(--green);
+        }
+        .cl-checkbox::after {
+            content: '';
+            position: absolute;
+            width: 5px;
+            height: 9px;
+            border: solid #fff;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg) scale(0);
+            transition: transform 0.2s;
+            top: 3px;
+            left: 6px;
+        }
+        .checklist li.checked .cl-checkbox::after {
+            transform: rotate(45deg) scale(1);
+        }
+        .cl-text {
+            flex: 1;
+            line-height: 1.5;
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+        .cl-badge {
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+            flex-shrink: 0;
+            letter-spacing: 0.03em;
+        }
+        .cl-badge.minimum {
+            background: var(--red-soft);
+            color: var(--red);
+            animation: pulse-min 2.5s ease-in-out infinite;
+        }
+        @keyframes pulse-min {
+            0%,
+            100% {
+                opacity: 0.8;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+        .cl-badge.core {
+            background: var(--accent-soft);
+            color: var(--accent);
+        }
+
+        /* MINIMUM ALERT */
+        .minimum-alert {
+            background: #FFF5F3;
+            border: 1.5px solid #E07B6C40;
+            border-radius: var(--radius-lg);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #C25445;
+        }
+        .minimum-alert .icon-shield {
+            font-size: 1.6rem;
+            flex-shrink: 0;
+        }
+
+        /* REWARD */
+        .reward-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        @media (max-width: 500px) {
+            .reward-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .reward-card {
+            background: #FAF9FD;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            text-align: center;
+            transition: var(--transition);
+        }
+        .reward-card:hover {
+            border-color: var(--accent-glow);
+        }
+        .reward-days {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent);
+            font-family: var(--font-mono);
+            letter-spacing: -0.03em;
+        }
+        .reward-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 2px;
+        }
+        .reward-desc {
+            font-size: 0.85rem;
+            color: var(--text);
+            margin-top: 4px;
+            min-height: 20px;
+        }
+        .reward-progress-mini {
+            height: 4px;
+            background: var(--border);
+            border-radius: 4px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        .reward-progress-mini-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 4px;
+            transition: width 0.5s;
+        }
+
+        /* ERROR */
+        .error-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .error-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            font-size: 0.85rem;
+        }
+        .error-rank {
+            font-weight: 800;
+            color: var(--red);
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        /* COLLAPSIBLE */
+        .collapsible-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            padding: 6px 0;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .collapsible-arrow {
+            transition: transform 0.3s;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            flex-shrink: 0;
+        }
+        .collapsible.open .collapsible-arrow {
+            transform: rotate(180deg);
+        }
+        .collapsible-body {
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+        .collapsible.open .collapsible-body {
+            max-height: 6000px;
+            opacity: 1;
+        }
+
+        /* FLOAT BUTTON */
+        .float-btn {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 200;
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #FFFFFF;
+            border: none;
+            cursor: pointer;
+            font-size: 1.4rem;
+            font-weight: 700;
+            box-shadow: 0 6px 28px rgba(107, 91, 149, 0.4);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .float-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 36px rgba(107, 91, 149, 0.5);
+        }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-120px);
+            background: #FFFFFF;
+            border: 1px solid var(--border-light);
+            color: var(--text-heading);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            z-index: 300;
+            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+            box-shadow: var(--shadow-lg);
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* CELEBRATION */
+        .celebrate-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 250;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .celebrate-text {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent);
+            animation: celeb-pop 0.6s ease-out forwards;
+            text-align: center;
+            text-shadow: 0 0 30px rgba(107, 91, 149, 0.4);
+        }
+        @keyframes celeb-pop {
+            0% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.15);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* CODE BLOCK */
+        .code-block {
+            background: #F5F3FA;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 14px 16px;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: #2C2C3A;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            position: relative;
+        }
+        .copy-btn-abs {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            background: #FFFFFF;
+            border: 1px solid var(--border-light);
+            color: var(--text-secondary);
+            padding: 4px 12px;
+            border-radius: 14px;
+            cursor: pointer;
+            font-size: 0.72rem;
+            font-weight: 600;
+            transition: var(--transition);
+            font-family: var(--font-sans);
+        }
+        .copy-btn-abs:hover {
+            background: var(--bg-elevated);
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+        .copy-btn-abs.copied {
+            background: var(--green-soft);
+            border-color: var(--green);
+            color: var(--green-bright);
+        }
+
+        /* EDITABLE */
+        .editable-inline {
+            display: inline-block;
+            border-bottom: 1.5px dashed var(--border-light);
+            padding: 2px 6px;
+            cursor: text;
+            min-width: 60px;
+            color: var(--text-heading);
+            transition: var(--transition);
+            border-radius: 2px;
+        }
+        .editable-inline:focus {
+            outline: none;
+            border-bottom-color: var(--accent);
+            background: rgba(107, 91, 149, 0.03);
+        }
+        .editable-inline:empty::before {
+            content: '点击填写';
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* MISC */
+        .text-accent {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .text-green {
+            color: var(--green-bright);
+        }
+        .text-red {
+            color: var(--red);
+        }
+        .text-sm {
+            font-size: 0.82rem;
+        }
+        .text-xs {
+            font-size: 0.72rem;
+        }
+        .text-mono {
+            font-family: var(--font-mono);
+        }
+        .mt-8 {
+            margin-top: 8px;
+        }
+        .mt-12 {
+            margin-top: 12px;
+        }
+        .mt-16 {
+            margin-top: 16px;
+        }
+        .mb-8 {
+            margin-bottom: 8px;
+        }
+        .mb-12 {
+            margin-bottom: 12px;
+        }
+        .flex-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 16px 0;
+        }
+        .tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            background: var(--blue-soft);
+            color: var(--blue);
+        }
+        .never-miss-twice {
+            background: #FFF5F3;
+            border: 1px solid #E07B6C30;
+            border-radius: var(--radius);
+            padding: 12px 16px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #C25445;
+            letter-spacing: 0.02em;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 12px;
+                gap: 14px;
+            }
+            .card {
+                padding: 16px 14px;
+            }
+            .hero-identity {
+                font-size: 1.2rem;
+            }
+            .top-bar {
+                padding: 10px 14px;
+                gap: 8px;
+            }
+            .top-bar-left {
+                gap: 8px;
+            }
+            .streak-badge {
+                font-size: 0.78rem;
+                padding: 5px 10px;
+            }
+            .streak-num {
+                font-size: 1.1rem;
+            }
+            .btn {
+                padding: 9px 16px;
+                font-size: 0.82rem;
+            }
+            .float-btn {
+                width: 46px;
+                height: 46px;
+                bottom: 16px;
+                right: 16px;
+                font-size: 1.2rem;
+            }
+            .reward-grid {
+                grid-template-columns: 1fr;
+            }
+            .progress-wrap {
+                top: 48px;
+                padding: 8px 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Top Bar -->
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <span class="logo-text"><span class="logo-dot"></span>B1 → B2 训练面板</span>
+            <span class="streak-badge" id="streakBadge">🔥 <span class="streak-num" id="streakNum">0</span> 天连续</span>
+            <span class="status-indicator" id="statusIndicator">
+                <span class="status-dot idle" id="statusDot"></span>
+                <span id="statusLabel">未开始</span>
+            </span>
+            <span class="sync-indicator" id="syncIndicator">
+                <span class="sync-dot offline" id="syncDot"></span>
+                <span id="syncLabel">离线</span>
+            </span>
+        </div>
+        <div class="btn-group">
+            <span id="userArea"></span>
+            <button class="btn btn-sm btn-outline" onclick="manualSync()" id="btnSync">☁️ 同步</button>
+            <button class="btn btn-sm btn-outline" onclick="resetToday()">↺ 重置今日</button>
+            <button class="btn btn-sm btn-outline" onclick="markAllDone()">✓ 标记完成</button>
+        </div>
+    </header>
+
+    <!-- Progress Bar -->
+    <div class="progress-wrap" id="progressWrap">
+        <div class="progress-info"><span>今日完成度</span><span class="progress-pct" id="progressPct">0%</span></div>
+        <div class="progress-bar-outer"><div class="progress-bar-inner" id="progressBar" style="width:0%;"></div></div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-container">
+
+        <!-- HERO -->
+        <section class="hero-section card card-highlight" id="heroSection">
+            <p class="hero-identity">我是<span class="em">每天练英语</span>的人。</p>
+            <p class="hero-date-info" id="heroDate"></p>
+            <span class="hero-day-type" id="heroDayType">翻译训练日</span>
+            <div class="mt-12"><button class="btn btn-primary" onclick="scrollToTasks()">⚡ 开始训练</button></div>
+        </section>
+
+        <!-- 今日任务 -->
+        <section class="card accent-left" id="taskCard">
+            <div class="card-title">📋 今日任务</div>
+            <div class="card-heading" id="taskHeading">翻译训练日流程</div>
+            <ul class="checklist mt-12" id="checklist"></ul>
+            <div class="mt-12 flex-row" style="justify-content:space-between;">
+                <span class="text-sm" style="color:var(--text-secondary);" id="completionSummary">完成 0 / 0 项</span>
+                <button class="btn btn-sm btn-outline" onclick="scrollToMinimal()">🔻 查看最低底线</button>
+            </div>
+        </section>
+
+        <!-- 最低底线 -->
+        <section class="minimum-alert" id="minimumSection">
+            <span class="icon-shield">🛡️</span>
+            <span><strong>今日最低底线（不可破）：</strong>翻译 5 句话，5 分钟内结束。<br><span class="text-xs" style="color:#C25445;">开始是最难的，打开文档翻完第一句，99% 会翻完 10 句。</span></span>
+        </section>
+
+        <!-- 三件事 -->
+        <section class="card green-left" id="threeThings">
+            <div class="card-title">✅ 今天就做的三件事</div>
+            <ul class="checklist mt-8" id="threeThingsList">
+                <li data-id="thing1" onclick="toggleThing(this)"><span class="cl-checkbox"></span><span class="cl-text"><strong>第一件（10分钟）：</strong>在 Obsidian 填完执行承诺，时间地点写具体。</span></li>
+                <li data-id="thing2" onclick="toggleThing(this)"><span class="cl-checkbox"></span><span class="cl-text"><strong>第二件（30分钟）：</strong>去 VOA 找 5 篇 Level 2 故事，AI 翻成中文存 Obsidian。</span></li>
+                <li data-id="thing3" onclick="toggleThing(this)"><span class="cl-checkbox"></span><span class="cl-text"><strong>第三件（本周内）：</strong>查 KBCC 图书馆有无 Grammar in Use 蓝色版。</span></li>
+            </ul>
+        </section>
+
+        <!-- 执行承诺 -->
+        <section class="card orange-left" id="commitmentCard">
+            <div class="card-title">📝 我的执行承诺</div>
+            <p class="text-sm mb-12" style="color:var(--text-secondary);">每天 <span class="editable-inline" contenteditable="true" id="commitTime" data-key="commitTime">___:___</span>，在 <span class="editable-inline" contenteditable="true" id="commitPlace" data-key="commitPlace">____________</span>，我打开 Obsidian 开始翻译训练。</p>
+            <p class="text-sm" style="color:var(--text-secondary);">连续 30 天奖励：<span class="editable-inline" contenteditable="true" id="reward30" data-key="reward30">________________________</span></p>
+            <p class="text-sm" style="color:var(--text-secondary);">连续 60 天奖励：<span class="editable-inline" contenteditable="true" id="reward60" data-key="reward60">________________________</span></p>
+        </section>
+
+        <!-- 奖励 -->
+        <section class="card" id="rewardSection">
+            <div class="card-title">🎁 里程碑奖励</div>
+            <div class="reward-grid mt-8">
+                <div class="reward-card"><div class="reward-label">30 天奖励</div><div class="reward-days" id="reward30Days">0/30</div><div class="reward-desc" id="reward30Desc">设置你的奖励</div><div class="reward-progress-mini"><div class="reward-progress-mini-fill" id="reward30Bar" style="width:0%;"></div></div></div>
+                <div class="reward-card"><div class="reward-label">60 天奖励</div><div class="reward-days" id="reward60Days">0/60</div><div class="reward-desc" id="reward60Desc">设置你的奖励</div><div class="reward-progress-mini"><div class="reward-progress-mini-fill" id="reward60Bar" style="width:0%;"></div></div></div>
+            </div>
+        </section>
+
+        <!-- 错误 Top3 -->
+        <section class="card" id="errorSection">
+            <div class="card-title">🔍 本周高频错误 Top 3</div>
+            <ul class="error-list mt-8" id="errorTop3">
+                <li><span class="error-rank">#1</span><span class="editable-inline" contenteditable="true" data-key="err1" style="flex:1;">点击填写最高频错误</span></li>
+                <li><span class="error-rank">#2</span><span class="editable-inline" contenteditable="true" data-key="err2" style="flex:1;">点击填写第二高频错误</span></li>
+                <li><span class="error-rank">#3</span><span class="editable-inline" contenteditable="true" data-key="err3" style="flex:1;">点击填写第三高频错误</span></li>
+            </ul>
+            <button class="btn btn-sm btn-ghost mt-8" onclick="clearErrors()">🗑️ 清空本周错误记录</button>
+        </section>
+
+        <!-- 提示词 -->
+        <section class="card" id="promptCard">
+            <div class="card-title">🤖 ChatGPT 固定提示词</div>
+            <div class="code-block" style="position:relative;">
+                <button class="copy-btn-abs" id="copyPromptBtn" onclick="copyPrompt()">📋 复制</button>
+                <code id="promptCode">I am a B1 English learner.
+Correct my grammar errors only.
+Focus on: verb form, verb tense (especially past perfect misuse), and clause structure.
+Explain each correction briefly.
+Do not change my vocabulary or ideas.</code>
+            </div>
+        </section>
+
+        <div class="never-miss-twice">⚠️ 可以错一天，不能连续错两天。 <strong>Never miss twice.</strong></div>
+
+        <!-- 可折叠内容区 -->
+        <section class="card collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this.parentElement)"><span class="card-heading" style="margin-bottom:0;">💡 核心逻辑：为什么是翻译训练</span><span class="collapsible-arrow">▼</span></div><div class="collapsible-body"><div class="mt-12"><table style="width:100%;border-collapse:collapse;font-size:0.85rem;"><thead><tr style="color:var(--text-secondary);text-align:left;"><th style="padding:8px;">方法</th><th style="padding:8px;">问题</th></tr></thead><tbody><tr style="border-top:1px solid var(--border);"><td style="padding:8px;color:var(--red);">纯做语法题</td><td style="padding:8px;">做完题会，写作时还是错</td></tr><tr style="border-top:1px solid var(--border);"><td style="padding:8px;color:var(--red);">每天写新作文</td><td style="padding:8px;">错误没有闭环</td></tr><tr style="border-top:1px solid var(--border);"><td style="padding:8px;color:var(--red);">背单词</td><td style="padding:8px;">核心问题是语法系统性错误</td></tr><tr style="border-top:1px solid var(--border);"><td style="padding:8px;color:var(--green-bright);font-weight:600;">翻译训练闭环</td><td style="padding:8px;font-weight:600;">强迫输出→立即对比→修复错误→最高效</td></tr></tbody></table><p class="mt-12 text-sm" style="color:var(--accent);font-weight:600;">核心问题：同一类语法错误反复出现，需要闭环训练。</p></div></div></section>
+        <section class="card collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this.parentElement)"><span class="card-heading" style="margin-bottom:0;">📖 第一阶段：准备期（第 1–2 周）</span><span class="collapsible-arrow">▼</span></div><div class="collapsible-body"><div class="mt-12"><p class="text-sm"><strong>材料：</strong>《English Grammar in Use》蓝色版</p><p class="text-sm mt-8"><strong>每天 15–20 分钟只读不做题：</strong>Day 1: Unit 5–6 | Day 2: 15–16 | Day 3: 25–27 | Day 4: 75–76 | Day 5: 77–78 | Day 6–7: 复习手写例句</p></div></div></section>
+        <section class="card collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this.parentElement)"><span class="card-heading" style="margin-bottom:0;">⚙️ 第二阶段：核心训练期（第 3 周起）</span><span class="collapsible-arrow">▼</span></div><div class="collapsible-body"><div class="mt-12"><p class="text-sm"><strong>材料：</strong>VOA Learning English Level 2/3，每周日备料</p><p class="text-sm mt-8"><strong>每日 25 分钟：</strong>①昨日错误回顾 5min → ②裸翻训练 10min → ③自查 5min → ④AI对比记录 5min</p></div></div></section>
+        <section class="card collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this.parentElement)"><span class="card-heading" style="margin-bottom:0;">📅 每周节奏总览</span><span class="collapsible-arrow">▼</span></div><div class="collapsible-body"><div class="mt-12"><table style="width:100%;border-collapse:collapse;font-size:0.8rem;text-align:center;"><thead><tr style="color:var(--text-secondary);"><th>周一</th><th>周二</th><th>周三</th><th>周四</th><th>周五</th><th>周六</th><th>周日</th></tr></thead><tbody><tr style="border-top:1px solid var(--border);"><td>翻译 25min</td><td>翻译 25min</td><td style="color:var(--accent);font-weight:600;">语法专项 25min</td><td>翻译 25min</td><td>翻译 25min</td><td style="color:var(--blue);font-weight:600;">写作日 30min</td><td style="color:var(--green-bright);font-weight:600;">复盘备料 20min</td></tr></tbody></table><p class="text-xs mt-8" style="color:var(--text-secondary);">每周总时长：约 3 小时</p></div></div></section>
+        <section class="card collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this.parentElement)"><span class="card-heading" style="margin-bottom:0;">🏆 月度里程碑</span><span class="collapsible-arrow">▼</span></div><div class="collapsible-body"><div class="mt-12" style="font-size:0.85rem;line-height:1.8;"><p><strong>第1个月：</strong>动词形式错误减少60%</p><p><strong>第2个月：</strong>时态控制基本稳定</p><p><strong>第3个月：</strong>句子结构多样化</p><p><strong>第4个月：</strong>写作流畅度提升</p><p><strong>第5–6个月：</strong>稳定B2/ENG 1200水平</p></div></div></section>
+        <section class="card collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this.parentElement)"><span class="card-heading" style="margin-bottom:0;">🧠 防偷懒机制</span><span class="collapsible-arrow">▼</span></div><div class="collapsible-body"><div class="mt-12" style="font-size:0.85rem;line-height:1.9;"><p>🔗 锚定习惯 | 🛡️ 最低底线5句话 | 🔥 连续记录 | 📈 可见进步 | 🎯 执行意图 | 🎁 里程碑奖励 | 🪪 身份认同 | 🔄 Never Miss Twice</p></div></div></section>
+        <section class="card collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this.parentElement)"><span class="card-heading" style="margin-bottom:0;">📋 Obsidian 每日记录模板</span><span class="collapsible-arrow">▼</span></div><div class="collapsible-body"><div class="code-block mt-12" style="max-height:300px;overflow-y:auto;"><code>---
+date: {{date}}
+streak: 连续第 ___ 天
+---
+# English Log — {{date}}
+## 今日训练类型
+## 今日材料
+## 今日错误记录
+| # | 我写的 | 正确写法 | 错误类型 |
+## 今日最高频错误
+## 本周累计高频错误 Top 3
+## 今日改正句
+## 今日复盘
+## 明日注意</code></div></div></section>
+    </main>
+
+    <footer style="text-align:center;padding:20px;color:var(--text-secondary);font-size:0.75rem;">
+        <p>适用对象：英语 B1 水平，目标 B2 / KBCC ENG 1200，在布鲁克林学习</p>
+        <p style="margin-top:4px;">计划制定：2026 年 5 月 · 周期：5–6 个月 · 每天 25–35 分钟</p>
+        <div class="btn-group mt-12" style="justify-content:center;">
+            <button class="btn btn-xs btn-ghost" onclick="exportData()">📥 导出 JSON 备份</button>
+            <button class="btn btn-xs btn-ghost" onclick="importData()">📤 导入 JSON 备份</button>
+            <button class="btn btn-xs btn-ghost" onclick="clearAllData()">⚠️ 清除所有数据</button>
+            <button class="btn btn-xs btn-ghost" onclick="resetStreak()">🔄 重置 Streak</button>
+        </div>
+    </footer>
+
+    <button class="float-btn" onclick="scrollToTasks()">⚡</button>
+    <div class="celebrate-overlay" id="celebrateOverlay" style="display:none;"></div>
+
+    <!-- Firebase + 主逻辑 Module -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDp1Dl78ovJ7X8lKOCe9WYIvsPrnT2oyxc",
+            authDomain: "sdet-tracker.firebaseapp.com",
+            projectId: "sdet-tracker",
+            storageBucket: "sdet-tracker.firebasestorage.app",
+            messagingSenderId: "491562975282",
+            appId: "1:491562975282:web:260e9e7008b4e9acc53c2b",
+            measurementId: "G-0YJT8P87JC"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const provider = new GoogleAuthProvider();
+
+        const STORAGE_KEY = 'engB1B2_learningPanel';
+        const FIRESTORE_COLLECTION = 'learningPanels';
+        const todayStr = getDateStr(new Date());
+        const dayOfWeek = new Date().getDay();
+
+        let appData = getDefaultData();
+        let currentUser = null;
+        let syncState = 'offline';
+        let lastSyncTime = null;
+        let syncDebounceTimer = null;
+        const SYNC_DEBOUNCE_MS = 2500;
+
+        // DOM Refs
+        const $ = (id) => document.getElementById(id);
+        const $checklist = $('checklist');
+        const $progressBar = $('progressBar');
+        const $progressPct = $('progressPct');
+        const $streakNum = $('streakNum');
+        const $streakBadge = $('streakBadge');
+        const $statusDot = $('statusDot');
+        const $statusLabel = $('statusLabel');
+        const $completionSummary = $('completionSummary');
+        const $heroDayType = $('heroDayType');
+        const $heroDate = $('heroDate');
+        const $taskHeading = $('taskHeading');
+        const $toast = $('toast');
+        const $celebrateOverlay = $('celebrateOverlay');
+        const $copyPromptBtn = $('copyPromptBtn');
+        const $reward30Days = $('reward30Days');
+        const $reward60Days = $('reward60Days');
+        const $reward30Bar = $('reward30Bar');
+        const $reward60Bar = $('reward60Bar');
+        const $reward30Desc = $('reward30Desc');
+        const $reward60Desc = $('reward60Desc');
+        const $progressWrap = $('progressWrap');
+        const $syncDot = $('syncDot');
+        const $syncLabel = $('syncLabel');
+        const $btnSync = $('btnSync');
+        const $userArea = $('userArea');
+
+        function getDefaultData() {
+            return {
+                startDate: '2026-05-14',
+                completedDates: [],
+                taskChecks: {},
+                threeThings: {},
+                errors: { err1: '', err2: '', err3: '' },
+                commitTime: '',
+                commitPlace: '',
+                reward30: '',
+                reward60: '',
+                lastUpdated: null
+            };
+        }
+
+        function loadLocalData() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    const defaults = getDefaultData();
+                    for (const k in defaults) { if (!(k in parsed)) parsed[k] = defaults[k]; }
+                    return parsed;
+                }
+            } catch (e) {}
+            return getDefaultData();
+        }
+
+        function saveLocalData(data) {
+            data.lastUpdated = new Date().toISOString();
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        }
+
+        function getUserDocRef() {
+            if (!currentUser) return null;
+            return doc(db, FIRESTORE_COLLECTION, currentUser.uid);
+        }
+
+        async function saveToCloud(data) {
+            if (!currentUser || !db) return;
+            const docRef = getUserDocRef();
+            if (!docRef) return;
+            try {
+                setSyncState('syncing');
+                await setDoc(docRef, { ...data, _cloudUpdated: serverTimestamp() }, { merge: true });
+                lastSyncTime = new Date();
+                setSyncState('synced');
+            } catch (e) {
+                console.warn('云同步失败', e);
+                setSyncState('error');
+            }
+        }
+
+        async function loadFromCloud() {
+            if (!currentUser || !db) return null;
+            const docRef = getUserDocRef();
+            if (!docRef) return null;
+            try {
+                setSyncState('syncing');
+                const snap = await getDoc(docRef);
+                if (snap.exists()) {
+                    const data = snap.data();
+                    delete data._cloudUpdated;
+                    const defaults = getDefaultData();
+                    for (const k in defaults) { if (!(k in data)) data[k] = defaults[k]; }
+                    lastSyncTime = new Date();
+                    setSyncState('synced');
+                    return data;
+                }
+                setSyncState('synced');
+                return null;
+            } catch (e) {
+                console.warn('云端加载失败', e);
+                setSyncState('error');
+                return null;
+            }
+        }
+
+        function mergeData(local, cloud) {
+            if (!cloud) return local;
+            if (!local || !local.lastUpdated) return cloud;
+            if (!cloud.lastUpdated) return local;
+            const lt = new Date(local.lastUpdated).getTime();
+            const ct = new Date(cloud.lastUpdated).getTime();
+            if (ct > lt) return cloud;
+            if (lt > ct) return local;
+            const merged = { ...cloud, ...local };
+            merged.completedDates = [...new Set([...(cloud.completedDates || []), ...(local.completedDates || [])])].sort();
+            merged.taskChecks = { ...(cloud.taskChecks || {}), ...(local.taskChecks || {}) };
+            merged.threeThings = { ...(cloud.threeThings || {}), ...(local.threeThings || {}) };
+            merged.errors = { ...(cloud.errors || {}), ...(local.errors || {}) };
+            return merged;
+        }
+
+        function setSyncState(state) {
+            syncState = state;
+            $syncDot.className = 'sync-dot ' + state;
+            const labels = { offline: '离线', syncing: '同步中…', synced: '已同步', error: '同步失败' };
+            $syncLabel.textContent = labels[state] || state;
+            $btnSync.textContent = state === 'syncing' ? '⏳ 同步中' : '☁️ 同步';
+        }
+
+        function scheduleCloudSave() {
+            if (syncDebounceTimer) clearTimeout(syncDebounceTimer);
+            syncDebounceTimer = setTimeout(() => saveToCloud(appData), SYNC_DEBOUNCE_MS);
+        }
+
+        function saveData(data) {
+            appData = data;
+            saveLocalData(data);
+            scheduleCloudSave();
+        }
+
+        async function manualSync() {
+            if (!currentUser) {
+                showToast('请先登录 Google 账号');
+                return;
+            }
+            showToast('☁️ 正在同步…');
+            const cloudData = await loadFromCloud();
+            if (cloudData) {
+                const merged = mergeData(appData, cloudData);
+                if (JSON.stringify(merged) !== JSON.stringify(appData)) {
+                    appData = merged;
+                    saveLocalData(appData);
+                    renderChecklist();
+                    updateAllUI();
+                    showToast('✅ 已同步最新数据');
+                } else {
+                    await saveToCloud(appData);
+                    showToast('✅ 数据已同步');
+                }
+            } else if (syncState === 'error') {
+                showToast('❌ 同步失败，请重试');
+            } else {
+                await saveToCloud(appData);
+                showToast('✅ 数据已上传云端');
+            }
+        }
+
+        // Google 登录 / 登出
+        async function googleLogin() {
+            try {
+                const result = await signInWithPopup(auth, provider);
+                currentUser = result.user;
+                updateUserUI();
+                showToast('✅ 已登录：' + currentUser.displayName);
+                await initCloudSync();
+            } catch (e) {
+                console.error('登录失败', e);
+                showToast('❌ 登录失败，请重试');
+            }
+        }
+
+        async function googleLogout() {
+            await signOut(auth);
+            currentUser = null;
+            updateUserUI();
+            setSyncState('offline');
+            showToast('👋 已退出登录，数据保留在本地');
+        }
+
+        function updateUserUI() {
+            if (currentUser) {
+                $userArea.innerHTML = `
+                    <span class="user-info">
+                        <img class="user-avatar" src="${currentUser.photoURL || ''}" alt="">
+                        <span>${currentUser.displayName || '用户'}</span>
+                    </span>
+                    <button class="btn btn-sm btn-outline" onclick="window._googleLogout()">退出</button>
+                `;
+            } else {
+                $userArea.innerHTML = `<button class="btn-login" onclick="window._googleLogin()"><span style="font-size:1.1rem;">G</span> 使用 Google 登录</button>`;
+            }
+        }
+
+        async function initCloudSync() {
+            if (!currentUser) return;
+            const cloudData = await loadFromCloud();
+            if (cloudData) {
+                const merged = mergeData(appData, cloudData);
+                if (JSON.stringify(merged) !== JSON.stringify(appData)) {
+                    appData = merged;
+                    saveLocalData(appData);
+                    renderChecklist();
+                    updateAllUI();
+                }
+            } else if (!cloudData && syncState !== 'error') {
+                await saveToCloud(appData);
+            }
+        }
+
+        // 其余功能函数
+        function getDateStr(d) { const y = d.getFullYear(); const m = String(d.getMonth() + 1).padStart(2, '0'); const day = String(d.getDate()).padStart(2, '0'); return `${y}-${m}-${day}`; }
+
+        function calcStreak(dates) {
+            if (!dates || dates.length === 0) return 0;
+            const sorted = [...new Set(dates)].sort().reverse();
+            const today = getDateStr(new Date());
+            const yest = (() => { const d = new Date();
+                d.setDate(d.getDate() - 1); return getDateStr(d); })();
+            let ref = null;
+            if (sorted[0] === today) ref = today;
+            else if (sorted[0] === yest) ref = yest;
+            else if (sorted.includes(yest)) ref = yest;
+            else return 0;
+            if (!ref) return 0;
+            let streak = 0;
+            const check = new Date(ref);
+            for (const s of sorted) {
+                if (s === getDateStr(check)) { streak++;
+                    check.setDate(check.getDate() - 1); } else if (s < getDateStr(check)) break;
+            }
+            return streak;
+        }
+
+        function isTodayCompleted() { return appData.completedDates.includes(todayStr); }
+
+        function getTodayTaskChecks() { return appData.taskChecks[todayStr] || {}; }
+
+        function setTodayTaskCheck(taskId, checked) {
+            if (!appData.taskChecks[todayStr]) appData.taskChecks[todayStr] = {};
+            if (checked) appData.taskChecks[todayStr][taskId] = true;
+            else delete appData.taskChecks[todayStr][taskId];
+            if (Object.keys(appData.taskChecks[todayStr]).length === 0) delete appData.taskChecks[todayStr];
+            saveData(appData);
+            updateAllUI();
+        }
+
+        function getTodayTaskCount() { return document.querySelectorAll('#checklist li[data-task-id]').length; }
+
+        function getTodayCheckedCount() {
+            const checks = getTodayTaskChecks();
+            let c = 0;
+            document.querySelectorAll('#checklist li[data-task-id]').forEach(li => { if (checks[li.dataset.taskId]) c++; });
+            return c;
+        }
+
+        function getDayTypeInfo() {
+            const m = { 0: { type: '复盘 + 备料日', emoji: '📋', heading: '周日复盘 & 备料流程' }, 1: { type: '翻译训练日', emoji: '📝', heading: '翻译训练日流程' }, 2: { type: '翻译训练日', emoji: '📝', heading: '翻译训练日流程' }, 3: { type: '语法专项日', emoji: '🔬', heading: '周三语法专项流程' }, 4: { type: '翻译训练日', emoji: '📝', heading: '翻译训练日流程' }, 5: { type: '翻译训练日', emoji: '📝', heading: '翻译训练日流程' }, 6: { type: '写作日', emoji: '✍️', heading: '周六写作日流程' } };
+            return m[dayOfWeek] || m[1];
+        }
+
+        function getTasksForDay() {
+            const d = {
+                0: [{ id: 'sun1', text: '本周错误总结', time: '10分钟', badge: 'core' }, { id: 'sun2', text: '准备下周材料', time: '10分钟', badge: 'core' }, { id: 'sun3', text: '最低底线：至少准备3篇材料', time: '5分钟', badge: 'minimum' }],
+                3: [{ id: 'wed1', text: '找出本周最高频错误', time: '5分钟', badge: 'core' }, { id: 'wed2', text: '读对应Grammar in Use Unit', time: '10分钟', badge: 'core' }, { id: 'wed3', text: '造8个句子发AI校对', time: '10分钟', badge: 'core' }, { id: 'wed4', text: '最低底线：读1个Unit造3句', time: '5分钟', badge: 'minimum' }],
+                6: [{ id: 'sat1', text: '写150–200字短文', time: '20分钟', badge: 'core' }, { id: 'sat2', text: '自查+AI校对', time: '10分钟', badge: 'core' }, { id: 'sat3', text: '最低底线：写80字短文', time: '10分钟', badge: 'minimum' }]
+            };
+            const def = [{ id: 't1', text: '昨日错误回顾', time: '5分钟', badge: 'core' }, { id: 't2', text: '裸翻训练（核心）', time: '10分钟', badge: 'core' }, { id: 't3', text: '自查', time: '5分钟', badge: 'core' }, { id: 't4', text: 'AI对比+记录错误', time: '5分钟', badge: 'core' }, { id: 't5', text: '最低底线：翻译5句话', time: '5分钟', badge: 'minimum' }];
+            return d[dayOfWeek] || def;
+        }
+
+        function renderChecklist() {
+            const tasks = getTasksForDay();
+            const checks = getTodayTaskChecks();
+            $checklist.innerHTML = '';
+            tasks.forEach(t => {
+                const li = document.createElement('li');
+                li.dataset.taskId = t.id;
+                if (checks[t.id]) li.classList.add('checked');
+                li.innerHTML = `<span class="cl-checkbox"></span><span class="cl-text">${t.text}</span><span class="cl-badge ${t.badge}">${t.time}</span>`;
+                li.addEventListener('click', () => {
+                    const cur = li.classList.contains('checked');
+                    if (cur) { li.classList.remove('checked');
+                        setTodayTaskCheck(t.id, false); } else { li.classList.add('checked');
+                        setTodayTaskCheck(t.id, true); if (getTodayCheckedCount() >= getTodayTaskCount() && getTodayTaskCount() > 0) markDayCompleted(); }
+                });
+                $checklist.appendChild(li);
+            });
+            updateCompletionSummary();
+        }
+
+        function updateCompletionSummary() {
+            const total = getTodayTaskCount();
+            const checked = getTodayCheckedCount();
+            $completionSummary.textContent = `完成 ${checked} / ${total} 项`;
+            const pct = total > 0 ? Math.round((checked / total) * 100) : 0;
+            $progressPct.textContent = pct + '%';
+            $progressBar.style.width = pct + '%';
+            if (pct === 0 && !isTodayCompleted()) setStatus('idle', '未开始');
+            else if (pct >= 100 || isTodayCompleted()) setStatus('done', '已完成');
+            else setStatus('active', '进行中');
+        }
+
+        function setStatus(state, label) { $statusDot.className = 'status-dot ' + state;
+            $statusLabel.textContent = label; }
+
+        function markDayCompleted() {
+            if (!appData.completedDates.includes(todayStr)) { appData.completedDates.push(todayStr);
+                appData.completedDates.sort();
+                saveData(appData);
+                showCelebration();
+                showToast('🎉 太棒了！今日任务全部完成！'); }
+            updateAllUI();
+        }
+
+        function showCelebration() {
+            $celebrateOverlay.style.display = 'flex';
+            $celebrateOverlay.innerHTML = '<span class="celebrate-text">🔥 今日完成！<br><small style="font-size:0.6em;">坚持就是胜利</small></span>';
+            setTimeout(() => { $celebrateOverlay.style.display = 'none';
+                $celebrateOverlay.innerHTML = ''; }, 1800);
+        }
+
+        function updateAllUI() {
+            const streak = calcStreak(appData.completedDates);
+            $streakNum.textContent = streak;
+            $streakBadge.classList.toggle('broken', streak === 0 && appData.completedDates.length > 0);
+            updateCompletionSummary();
+            updateRewards();
+            updateHeroDate();
+            updateThreeThingsUI();
+            updateEditableFields();
+            updateErrorFields();
+        }
+
+        function updateHeroDate() {
+            const info = getDayTypeInfo();
+            $heroDate.textContent = new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' });
+            $heroDayType.textContent = info.emoji + ' ' + info.type;
+            $taskHeading.textContent = info.heading;
+        }
+
+        function updateRewards() {
+            const cnt = appData.completedDates.length;
+            $reward30Days.textContent = Math.min(cnt, 30) + '/30';
+            $reward60Days.textContent = Math.min(cnt, 60) + '/60';
+            $reward30Bar.style.width = Math.min(100, Math.round((cnt / 30) * 100)) + '%';
+            $reward60Bar.style.width = Math.min(100, Math.round((cnt / 60) * 100)) + '%';
+            $reward30Desc.textContent = appData.reward30 || '设置你的奖励';
+            $reward60Desc.textContent = appData.reward60 || '设置你的奖励';
+            if (cnt >= 30) { $reward30Days.style.color = 'var(--green-bright)';
+                $reward30Bar.style.background = 'var(--green-bright)'; }
+            if (cnt >= 60) { $reward60Days.style.color = 'var(--green-bright)';
+                $reward60Bar.style.background = 'var(--green-bright)'; }
+        }
+
+        function updateThreeThingsUI() {
+            document.querySelectorAll('#threeThingsList li').forEach(li => li.classList.toggle('checked', appData.threeThings[li.dataset.id]));
+        }
+
+        function updateEditableFields() {
+            ['commitTime', 'commitPlace', 'reward30', 'reward60'].forEach(k => { const el = $(k); if (el && appData[k]) el.textContent = appData[k]; });
+        }
+
+        function updateErrorFields() {
+            ['err1', 'err2', 'err3'].forEach(k => { const el = document.querySelector(`[data-key="${k}"]`); if (el && appData.errors[k]) el.textContent = appData.errors[k]; });
+        }
+
+        function scrollToTasks() { const el = $('taskCard'); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                el.style.boxShadow = '0 0 0 4px var(--accent-glow)';
+                setTimeout(() => el.style.boxShadow = '', 1200); } }
+
+        function scrollToMinimal() { const el = $('minimumSection'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+
+        function markAllDone() {
+            getTasksForDay().forEach(t => { if (!appData.taskChecks[todayStr]) appData.taskChecks[todayStr] = {};
+                appData.taskChecks[todayStr][t.id] = true; });
+            if (!appData.completedDates.includes(todayStr)) { appData.completedDates.push(todayStr);
+                appData.completedDates.sort(); }
+            saveData(appData);
+            renderChecklist();
+            updateAllUI();
+            showCelebration();
+            showToast('✅ 今日已全部标记完成！');
+        }
+
+        function resetToday() {
+            if (appData.taskChecks[todayStr]) delete appData.taskChecks[todayStr];
+            appData.completedDates = appData.completedDates.filter(d => d !== todayStr);
+            saveData(appData);
+            renderChecklist();
+            updateAllUI();
+            setStatus('idle', '未开始');
+            showToast('🔄 今日进度已重置');
+        }
+
+        function toggleThing(li) {
+            appData.threeThings[li.dataset.id] = !appData.threeThings[li.dataset.id];
+            saveData(appData);
+            updateThreeThingsUI();
+        }
+
+        function copyPrompt() {
+            navigator.clipboard.writeText($('promptCode').textContent.trim()).then(() => {
+                $copyPromptBtn.textContent = '✓ 已复制';
+                $copyPromptBtn.classList.add('copied');
+                showToast('📋 提示词已复制');
+                setTimeout(() => { $copyPromptBtn.textContent = '📋 复制';
+                    $copyPromptBtn.classList.remove('copied'); }, 2000);
+            }).catch(() => showToast('⚠️ 复制失败'));
+        }
+
+        function clearErrors() {
+            appData.errors = { err1: '', err2: '', err3: '' };
+            saveData(appData);
+            document.querySelectorAll('#errorTop3 .editable-inline').forEach(el => { el.textContent = el.dataset.key === 'err1' ? '点击填写最高频错误' : el.dataset.key === 'err2' ? '点击填写第二高频错误' : '点击填写第三高频错误'; });
+            showToast('🗑️ 错误记录已清空');
+        }
+
+        function clearAllData() {
+            if (confirm('确定清除所有本地和云端数据吗？')) {
+                localStorage.removeItem(STORAGE_KEY);
+                appData = getDefaultData();
+                saveData(appData);
+                renderChecklist();
+                updateAllUI();
+                setStatus('idle', '未开始');
+                showToast('⚠️ 所有数据已清除');
+            }
+        }
+
+        function resetStreak() {
+            if (confirm('重置连续打卡记录？')) { appData.completedDates = [];
+                appData.taskChecks = {};
+                saveData(appData);
+                renderChecklist();
+                updateAllUI();
+                setStatus('idle', '未开始');
+                showToast('🔄 Streak 已重置'); }
+        }
+
+        function exportData() {
+            const blob = new Blob([JSON.stringify(appData, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `eng-b1-b2-backup-${todayStr}.json`;
+            a.click();
+            showToast('📥 数据已导出');
+        }
+
+        function importData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = e => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = ev => {
+                    try {
+                        const imported = JSON.parse(ev.target.result);
+                        const defaults = getDefaultData();
+                        for (const k in defaults) if (!(k in imported)) imported[k] = defaults[k];
+                        appData = imported;
+                        saveData(appData);
+                        renderChecklist();
+                        updateAllUI();
+                        showToast('📤 数据已导入');
+                    } catch { showToast('❌ 文件格式错误'); }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+
+        function showToast(msg) {
+            $toast.textContent = msg;
+            $toast.classList.add('show');
+            clearTimeout($toast._timeout);
+            $toast._timeout = setTimeout(() => $toast.classList.remove('show'), 2200);
+        }
+
+        function toggleCollapsible(el) { el.classList.toggle('open'); }
+
+        function setupEditableListeners() {
+            document.querySelectorAll('.editable-inline[data-key]').forEach(el => {
+                el.addEventListener('blur', () => {
+                    const key = el.dataset.key;
+                    const text = el.textContent.trim();
+                    if (['err1', 'err2', 'err3'].includes(key)) appData.errors[key] = text;
+                    else appData[key] = text;
+                    saveData(appData);
+                    if (key === 'reward30' || key === 'reward60') updateRewards();
+                });
+                el.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault();
+                        el.blur(); } });
+            });
+        }
+
+        window.addEventListener('scroll', () => $progressWrap.classList.toggle('scrolled', window.scrollY > 50));
+
+        // 全局暴露
+        window.scrollToTasks = scrollToTasks;
+        window.scrollToMinimal = scrollToMinimal;
+        window.markAllDone = markAllDone;
+        window.resetToday = resetToday;
+        window.toggleThing = toggleThing;
+        window.copyPrompt = copyPrompt;
+        window.clearErrors = clearErrors;
+        window.clearAllData = clearAllData;
+        window.resetStreak = resetStreak;
+        window.toggleCollapsible = toggleCollapsible;
+        window.manualSync = manualSync;
+        window.exportData = exportData;
+        window.importData = importData;
+        window._googleLogin = googleLogin;
+        window._googleLogout = googleLogout;
+
+        // 初始化
+        async function init() {
+            appData = loadLocalData();
+            renderChecklist();
+            updateAllUI();
+            updateHeroDate();
+            setupEditableListeners();
+            updateEditableFields();
+            updateErrorFields();
+            if (isTodayCompleted()) {
+                setStatus('done', '已完成');
+                const tasks = getTasksForDay();
+                if (!appData.taskChecks[todayStr]) appData.taskChecks[todayStr] = {};
+                tasks.forEach(t => { appData.taskChecks[todayStr][t.id] = true; });
+                saveLocalData(appData);
+                renderChecklist();
+                updateCompletionSummary();
+            }
+
+            onAuthStateChanged(auth, async (user) => {
+                currentUser = user;
+                updateUserUI();
+                if (user) {
+                    await initCloudSync();
+                } else {
+                    setSyncState('offline');
+                }
+            });
+        }
+
+        init();
+    </script>
+</body>
+</html>
